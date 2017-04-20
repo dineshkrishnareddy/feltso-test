@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <base href="/">
+
+    <title>Feltso Sample Test</title>
+
+    <!--&lt;!&ndash; CSS &ndash;&gt;-->
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
+    <!--<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">-->
+    <!--<link rel="stylesheet" href="css/app.css">-->
+
+    <!--&lt;!&ndash; JS &ndash;&gt;-->
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/canvasjs/1.7.0/jquery.canvasjs.min.js"></script>-->
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>-->
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="libs/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/jquery-ui.css">
+    <link rel="stylesheet" href="css/app.css">
+
+    <!-- JS -->
+    <script src="libs/jquery/dist/jquery.min.js"></script>
+    <script src="libs/jquery-ui/jquery-ui.min.js"></script>
+    <script src="libs/jquery.canvasjs.min.js"></script>
+    <script src="libs/angular/angular.min.js"></script>
+    <script src="libs/angular-route/angular-route.min.js"></script>
+    <script src="libs/jspdf.min.js"></script>
+
+    <!-- ANGULAR CUSTOM -->
+    <script src="js/controllers/MainCtrl.js"></script>
+    <script src="js/services/MainService.js"></script>
+    <script src="js/services/DataGeneratorService.js"></script>
+    <script src="js/factory/MainFactory.js"></script>
+    <script src="js/directives/chart-container.js"></script>
+    <script src="js/directives/comments-container.js"></script>
+    <script src="js/directives/posts-container.js"></script>
+    <script src="js/directives/likes-container.js"></script>
+    <script src="js/directives/download-pdf.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/ClassHandler.js"></script>
+
+    <script>
+        function init() {
+            window.addEventListener('scroll', function (e) {
+                var distanceY = window.pageYOffset || document.documentElement.scrollTop,
+                        shrinkOn = 300,
+                        header = document.querySelector("header");
+                if (distanceY > shrinkOn) {
+                    classie.add(header, "smaller");
+                } else {
+                    if (classie.has(header, "smaller")) {
+                        classie.remove(header, "smaller");
+                    }
+                }
+            });
+        }
+        window.onload = init();
+    </script>
+</head>
+<body ng-app="sampleApp" ng-controller="MainController">
+<div id="wrapper">
+
+    <header>
+        <div class="container clearfix">
+            <h1 id="logo">Feltso</h1>
+        </div>
+    </header>
+    <!-- /header -->
+
+    <div id="main">
+        <div id="content">
+            <section>
+                <div class="container  text-center">
+                    <div class="over-view-download">
+                        <feltso-download-pdf containerid="totalContent" type="data"></feltso-download-pdf>
+                    </div>
+                    <h3>OVERVIEW</h3>
+                </div>
+            </section>
+            <hr>
+            <section>
+                <div class="container">
+                    <div class="col-md-6 bottom-margin">
+                        <h3 class="custom-title">{{splineChartTitle}}</h3>
+                        <feltso-download-pdf containerid="chartContainer1" type="graph"></feltso-download-pdf>
+                        <div id="chartContainer1" class="chartContainer"></div>
+                    </div>
+                    <div class="col-md-6 bottom-margin">
+                        <h3 class="custom-title">{{barChartTitle}}</h3>
+                        <feltso-download-pdf containerid="chartContainer2" type="graph"></feltso-download-pdf>
+                        <div id="chartContainer2" class="chartContainer"></div>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <div class="container">
+                    <div class="col-md-6 bottom-margin custom-padding">
+                        <h3 class="custom-title">{{positivePostsTitle}}</h3>
+                        <feltso-download-pdf containerid="positivePostsContainer" type="data"></feltso-download-pdf>
+                        <div id="positivePostsContainer">
+                            <feltso-posts-container title="positivePostsTitle" data="positivePostsData" type="success"></feltso-posts-container>
+                        </div>
+                    </div>
+                    <div class="col-md-6 bottom-margin custom-padding">
+                        <h3 class="custom-title">{{negativePostsTitle}}</h3>
+                        <feltso-download-pdf containerid="negativePostsContainer" type="data"></feltso-download-pdf>
+                        <div id="negativePostsContainer">
+                            <feltso-posts-container title="negativePostsTitle" data="negativePostsData" type="failure"></feltso-posts-container>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <div class="container">
+                    <div class="col-md-6 bottom-margin custom-padding">
+                        <h3 class="custom-title">{{positiveCommentsTitle}}</h3>
+                        <feltso-download-pdf containerid="positiveCommentsContainer" type="data"></feltso-download-pdf>
+                        <div id="positiveCommentsContainer">
+                            <feltso-comments-container title="positiveCommentsTitle" data="positiveCommentsData" type="success"></feltso-comments-container>
+                        </div>
+                    </div>
+                    <div class="col-md-6 bottom-margin custom-padding">
+                        <h3 class="custom-title">{{negativeCommentsTitle}}</h3>
+                        <feltso-download-pdf containerid="negativeCommentsContainer" type="data"></feltso-download-pdf>
+                        <div id="negativeCommentsContainer">
+                            <feltso-comments-container title="negativeCommentsTitle" data="negativeCommentsData" type="failure"></feltso-comments-container>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <div class="container">
+                    <div class="col-md-6 bottom-margin custom-padding">
+                        <h3 class="custom-title">{{positiveLikesTitle}}</h3>
+                        <feltso-download-pdf containerid="positiveLikesContainer" type="data"></feltso-download-pdf>
+                        <div id="positiveLikesContainer">
+                            <feltso-likes-container title="positiveLikesTitle" data="positiveLikesData" type="success"></feltso-likes-container>
+                        </div>
+                    </div>
+                    <div class="col-md-6 bottom-margin custom-padding">
+                        <h3 class="custom-title">{{negativeLikesTitle}}</h3>
+                        <feltso-download-pdf containerid="negativeLikesContainer" type="data"></feltso-download-pdf>
+                        <div id="negativeLikesContainer">
+                            <feltso-likes-container title="negativeLikesTitle" data="negativeLikesData" type="failure"></feltso-likes-container>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <footer>
+    </footer>
+
+
+</div>
+</body>
+</html>
